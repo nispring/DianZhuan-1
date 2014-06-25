@@ -52,7 +52,7 @@
                 [self.window makeKeyAndVisible];
             }
     }];
-    
+    DLog(@"");
     
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]){
         //保存在keychain
