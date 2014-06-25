@@ -19,40 +19,31 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
+#import "LaunchViewController.h"
 //mejust 首页
 #import "FirstViewController.h"
 @implementation CBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+//    [NSThread sleepForTimeInterval:3];
     NSDictionary *dict=[NSDictionary dictionaryWithObjects:
                             [NSArray arrayWithObjects:[UIColor whiteColor],[UIFont boldSystemFontOfSize:20],[UIColor clearColor],nil] forKeys:
                             [NSArray arrayWithObjects:UITextAttributeTextColor,UITextAttributeFont,UITextAttributeTextShadowColor,nil]];
     [[UINavigationBar appearance] setTitleTextAttributes:dict];
 
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        [UINavigationBar appearance].tintColor = [UIColor colorWithStr:@"F36D6E"];
+        [UINavigationBar appearance].tintColor = [UIColor colorWithStr:@"B52020"];
     } else {
-        [UINavigationBar appearance].barTintColor = [UIColor colorWithStr:@"F36D6E"];
+        [UINavigationBar appearance].barTintColor = [UIColor colorWithStr:@"B52020"];
     }
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor whiteColor];
     
-    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"AppStatus"];
-    //查找GameScore表里面id为0c6db13c的数据
-    [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
-            if (object) {
-                UIViewController *vc ;
-                NSString *status = [object objectForKey:@"enable"];
-                [status intValue]==0?(vc = [[FirstViewController alloc]init]):(vc = [[MainViewController alloc]init]);
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                self.window.rootViewController = nav;
-                [self.window makeKeyAndVisible];
-            }
-    }];
-    DLog(@"");
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    LaunchViewController *vc = [[LaunchViewController alloc]init];
+    self.window.rootViewController = vc;
+    [self.window makeKeyAndVisible];
+
     
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]){
         //保存在keychain
@@ -62,12 +53,10 @@
         [CBKeyChain save:YOUMI data:@"0"];
         [CBKeyChain save:CHUKONG data:@"0"];
         [CBKeyChain save:DUOMENG data:@"0"];
-        DLog(@"123123");
         [CBKeyChain save:WANPU data:@"0"];
-        DLog(@"sadasddasd");
         [CBKeyChain save:MOPAN data:@"0"];
         [CBKeyChain save:INVITE data:@"0"];
-
+        
         //上传bmob User表
         BmobObject *bmob = [BmobObject objectWithClassName:@"User"];
         [bmob setObject:@"10000" forKey:TOTOLINTEGRAL];
@@ -79,9 +68,26 @@
                 [CBKeyChain save:USERID data:bmob.objectId];
                 [[RecordManager sharedRecordManager] updateRecordWithContent:@"首次赠送积分" andIntegral:@"+10000"];
             }
-
+            
         }];
     }
+
+    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"AppStatus"];
+    //查找GameScore表里面id为37ts0001的数据
+    [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
+            if (object) {
+                UIViewController *vc ;
+                NSString *status = [object objectForKey:@"enable"];
+                [status intValue]==0?(vc = [[FirstViewController alloc]init]):(vc = [[MainViewController alloc]init]);
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+                self.window.backgroundColor = [UIColor whiteColor];
+                self.window.rootViewController = nav;
+                [self.window makeKeyAndVisible];
+            }else{
+                [UIAlertView showAlertViewWithMessage:@"网络错误"];
+            }
+    }];
     
     [self initConfigWithOptions:launchOptions];
     return YES;

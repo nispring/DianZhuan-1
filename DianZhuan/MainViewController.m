@@ -27,13 +27,15 @@
 
 #import "ShareViewController.h"
 #import "InviteViewController.h"
+
+#import "ScrollLabelView.h"
 @interface MainViewController ()<PBOfferWallDelegate,DMOfferWallManagerDelegate,MopanAdWallDelegate,RNGridMenuDelegate>
 
 @property (nonatomic,strong)DMOfferWallManager *dmManager;
 @property (nonatomic,)MopanAdWall *MopanAdWall;
 @property (nonatomic,strong)MainTapCell *mainTopCell;
 @property (nonatomic,strong)TaskCell *taskCell;
-
+@property (nonatomic,strong)ScrollLabelView *scrollLabel;
 @property (nonatomic,strong)UIRefreshControl *refreshControl;
 @property (nonatomic,strong)NSArray *dataArray;
 
@@ -43,11 +45,10 @@
 
 - (void)loadView{
     [super loadView];
+    self.title = @"金手指";
     if(IOS_7){
         self.edgesForExtendedLayout = 0;
     }
-
-    self.title = @"金手指";
     
     UIButton *rightButton = [[UIButton alloc]init];
     UIImageView *imageview = [[UIImageView alloc]init];
@@ -59,22 +60,30 @@
     UIBarButtonItem *rightBar = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightBar;
     
-    
     self.dataArray =
     @[@{@"icon":@"adcenter",@"title":@"任务平台",@"subTitle":@"快来赚取积分吧"},
-      @{@"icon":@"icon_youmi@2x",@"title":@"大转盘 "
-        ,@"subTitle":@"转一转，人品大爆发"},
-      @{@"icon":@"share",@"title":@"分享",@"subTitle":@"分享给好友，轻松得积分"},
+      @{@"icon":@"icon_youmi@2x",@"title":@"每日签到"
+        ,@"subTitle":@"转盘大抽奖，人品大爆发"},
+      @{@"icon":@"share",@"title":@"邀请好友",@"subTitle":@"分享给好友，轻松得积分"},
       @{@"icon":@"invite",@"title":@"填写邀请人 "
-        ,@"subTitle":@"填写后领取100积分"}
+        ,@"subTitle":@"填写邀请人，轻松领取100积分"}
       ];
 
+    
+    NSArray *MainTopNib = [[NSBundle mainBundle]loadNibNamed:@"MainTopCell"owner:self options:nil];
+    self.mainTopCell = [MainTopNib objectAtIndex:0];
+    self.mainTopCell.idLabel.text = [CBKeyChain load:USERID];
+    self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
+    self.mainTopCell.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topCellBG"]];
+    self.tableView.tableHeaderView = _mainTopCell;
+    
     self.refreshControl = [[UIRefreshControl alloc]init];
     self.refreshControl.tintColor = [UIColor grayColor];
     self.refreshControl.attributedTitle = [[NSAttributedString alloc]initWithString:@"下拉刷新"];
     [self.refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     
     self.tableView.tableFooterView = [[UIView alloc]init];
+    self.tableView.backgroundColor = [UIColor clearColor];
 }
 - (void)viewDidLoad
 {
@@ -141,13 +150,29 @@
 
 -(void)handleData
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM-dd hh:mm"];
-    NSString *lastUpdated = [NSString stringWithFormat:@"上次刷新 %@", [formatter stringFromDate:[NSDate date]]];
-    [self UpdateIntegral];
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
-    [self.refreshControl endRefreshing];
-    [self.tableView reloadData];
+    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"AppStatus"];
+    [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
+        if (object) {
+            //得到playerName和cheatMode
+            NSString *notificationStr = [object objectForKey:@"notification"];
+            DLog(@"%@",notificationStr);
+            if(self.scrollLabel){
+                [self.scrollLabel removeFromSuperview];
+            }
+            self.scrollLabel = [[ScrollLabelView alloc]initWithFrame:CGRectMake(0, 0, APP_SCREEN_WIDTH, 25) WithContent:notificationStr];
+            [self.view addSubview:_scrollLabel];
+
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"MM-dd hh:mm"];
+            NSString *lastUpdated = [NSString stringWithFormat:@"上次刷新 %@", [formatter stringFromDate:[NSDate date]]];
+            [self UpdateIntegral];
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+            [self.refreshControl endRefreshing];
+            [self.tableView reloadData];
+
+        }
+    }];
+    
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh
@@ -159,53 +184,38 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
-        if(indexPath.row==0){
-            NSArray *MainTopNib = [[NSBundle mainBundle]loadNibNamed:@"MainTopCell"owner:self options:nil];
-            self.mainTopCell = [MainTopNib objectAtIndex:0];
-            self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
-            [cell.contentView addSubview:_mainTopCell];
-        }else{
-            TaskCell *taskCell = [[[NSBundle mainBundle] loadNibNamed:@"TaskCell" owner:self options:nil] lastObject];
-            taskCell.icon.image = [UIImage imageNamed:_dataArray[indexPath.row-1][@"icon"]];
-            taskCell.titleLabel.text = _dataArray[indexPath.row-1][@"title"];
-            taskCell.subTitleLabel.text = _dataArray[indexPath.row-1][@"subTitle"];
-            return taskCell;
-        }
-    }
-    return cell;
+    
+    TaskCell *taskCell = [[[NSBundle mainBundle] loadNibNamed:@"TaskCell" owner:self options:nil] lastObject];
+    taskCell.icon.image = [UIImage imageNamed:_dataArray[indexPath.row][@"icon"]];
+    taskCell.titleLabel.text = _dataArray[indexPath.row][@"title"];
+    taskCell.subTitleLabel.text = _dataArray[indexPath.row][@"subTitle"];
+    return taskCell;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _dataArray.count+1;
+    return _dataArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row==0){
-        return _mainTopCell.height;
-    }else{
-        return 80;
-    }
+    return 80;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
-        case 1:
+        case 0:
             [self showGrid];
             break;
-        case 2:
+        case 1:
         {
             TurntableViewController *vc = [[TurntableViewController alloc]init];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 3:
+        case 2:
         {
             ShareViewController *vc = [[ShareViewController alloc]initWithNibName:@"ShareViewController" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;
-        case 4:{
+        case 3:{
             if([[CBKeyChain load:INVITE]intValue]!=1){
                 InviteViewController *vc = [[InviteViewController alloc]init];
                 [self.navigationController pushViewController:vc animated:YES];

@@ -37,7 +37,7 @@
     
     UITableView *table = [[UITableView alloc]init];
     [self.view addSubview:table];
-    table.frame = self.view.frame;
+    table.frame = CGRectMake(0, 0, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT-64);
     table.dataSource = self;
     table.delegate = self;
     table.backgroundColor = [UIColor clearColor];

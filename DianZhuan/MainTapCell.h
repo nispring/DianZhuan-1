@@ -10,5 +10,6 @@
 
 @interface MainTapCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *integralLabel;
+@property (weak, nonatomic) IBOutlet UILabel *idLabel;
 
 @end

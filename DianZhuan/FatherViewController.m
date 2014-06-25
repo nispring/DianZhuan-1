@@ -20,7 +20,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithStr:@"edf1f2"];
-    
     if(IOS_7){
         self.edgesForExtendedLayout = 0;
     }

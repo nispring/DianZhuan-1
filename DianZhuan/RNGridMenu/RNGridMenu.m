@@ -76,7 +76,7 @@ CGPoint RNCentroidOfTouchesInView(NSSet *touches, UIView *view) {
 
         // create grayscale image to mask context
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
-        CGContextRef context = CGBitmapContextCreate(nil, maskLayer.bounds.size.width, maskLayer.bounds.size.height, 8, 0, colorSpace, kCGImageAlphaNone);
+        CGContextRef context = CGBitmapContextCreate(nil, maskLayer.bounds.size.width, maskLayer.bounds.size.height, 8, 0, colorSpace, 0);
         CGContextTranslateCTM(context, 0, maskLayer.bounds.size.height);
         CGContextScaleCTM(context, 1.f, -1.f);
         [maskLayer renderInContext:context];
@@ -141,7 +141,7 @@ CGPoint RNCentroidOfTouchesInView(NSSet *touches, UIView *view) {
                                              8,
                                              outBuffer.rowBytes,
                                              colorSpace,
-                                             kCGImageAlphaNoneSkipLast);
+                                             5);
     CGImageRef imageRef = CGBitmapContextCreateImage(ctx);
     UIImage *returnImage = [UIImage imageWithCGImage:imageRef];
 

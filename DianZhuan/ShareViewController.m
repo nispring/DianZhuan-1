@@ -46,13 +46,14 @@
 }
 
 - (IBAction)share:(id)sender {
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"AppIcon"  ofType:@"png"];
     //构造分享内容
-    id<ISSContent> publishContent = [ShareSDK content:@"我正在玩一个能够赚钱的手机软件#金手指#,五分钟就能赚十元钱,更能提现到支付宝或手机充值，你不想试试么？\n下载地址：\nhttp://jinshouzhi.bmob.cn"
-                                       defaultContent:@"金手指，手机赚钱专家"
-                                                image:nil
-                                                title:@"金手指"
+    id<ISSContent> publishContent = [ShareSDK content:@"我正在玩一个能够赚钱的神器#金手指#,五分钟就能赚十元钱,支持提现到支付宝或手机充值，赶紧下一个吧！\n下载地址：\nhttp://jinshouzhi.bmob.cn"
+                                       defaultContent:@"金手指-手机赚钱神器"
+                                                image:[ShareSDK imageWithPath:imagePath]
+                                                title:@"金手指-手机赚钱神器"
                                                   url:@"http://jinshouzhi.bmob.cn"
-                                          description:@"金手指，手机赚钱专家"
+                                          description:@"五分钟就能赚十元钱,支持提现到支付宝或手机充值"
                                             mediaType:SSPublishContentMediaTypeNews];
     //弹出分享菜单
     [ShareSDK showShareActionSheet:nil
@@ -87,7 +88,7 @@
             shareName = @"微信好友分享成功";
             break;
         case 23:  //微信朋友
-            shareName = @"微信朋友分享成功";
+            shareName = @"微信朋友圈分享成功";
             break;
         case 24:  //QQ
             shareName = @"QQ分享成功";

@@ -42,6 +42,11 @@
 		F00A9C911957C196001C1449 /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A9C6D1957C195001C1449 /* ShareSDKShareActionSheet.framework */; };
 		F00A9C931957C2A1001C1449 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A9C921957C2A1001C1449 /* libstdc++.dylib */; };
 		F00A9C951957C2C3001C1449 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A9C941957C2C3001C1449 /* libicucore.dylib */; };
+		F011EED1195A6DA00092523F /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F011EED0195A6DA00092523F /* LaunchViewController.m */; };
+		F011EED5195A964F0092523F /* personNow.png in Resources */ = {isa = PBXBuildFile; fileRef = F011EED4195A964F0092523F /* personNow.png */; };
+		F011EED7195A98DF0092523F /* topCellBG.png in Resources */ = {isa = PBXBuildFile; fileRef = F011EED6195A98DF0092523F /* topCellBG.png */; };
+		F011EED9195AA88B0092523F /* invite.png in Resources */ = {isa = PBXBuildFile; fileRef = F011EED8195AA88B0092523F /* invite.png */; };
+		F011EEDB195AA9480092523F /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = F011EEDA195AA9480092523F /* share.png */; };
 		F027C6FE1941865F006CF247 /* MainTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F027C6FD1941865F006CF247 /* MainTopCell.xib */; };
 		F027C70119418690006CF247 /* MainTapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F027C70019418690006CF247 /* MainTapCell.m */; };
 		F027C70F19418F0A006CF247 /* libOpenIDFA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F027C70D19418F0A006CF247 /* libOpenIDFA.a */; };
@@ -58,6 +63,7 @@
 		F0383E721952749F00CEB75C /* libDMOfferWallSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0383E701952749F00CEB75C /* libDMOfferWallSDK.a */; };
 		F0383E76195274B900CEB75C /* MopanAdLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0383E74195274B900CEB75C /* MopanAdLib.a */; };
 		F0383E7A195274EF00CEB75C /* CBKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F0383E79195274EF00CEB75C /* CBKeyChain.m */; };
+		F03E4971195ACB65001076C5 /* notification.png in Resources */ = {isa = PBXBuildFile; fileRef = F03E4970195ACB65001076C5 /* notification.png */; };
 		F04A55341958126100361F42 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A55321958126100361F42 /* ShareViewController.m */; };
 		F04A55351958126100361F42 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04A55331958126100361F42 /* ShareViewController.xib */; };
 		F04DA10E194AA08E00997E10 /* QuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04DA10D194AA08E00997E10 /* QuestionCell.xib */; };
@@ -201,11 +207,10 @@
 		F0C8EEFF19405B9100EAC2DE /* FatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C8EEFE19405B9100EAC2DE /* FatherViewController.m */; };
 		F0DF0F8B194B02240079E8B9 /* navigationbar_44.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DF0F89194B02240079E8B9 /* navigationbar_44.png */; };
 		F0DF0F8C194B02240079E8B9 /* navigationbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DF0F8A194B02240079E8B9 /* navigationbar.png */; };
+		F0FD9AFF195AC0330015CD73 /* ScrollLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FD9AFE195AC0330015CD73 /* ScrollLabelView.m */; };
 		F0FE3E1A195824AB003A98AF /* adcenter.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE3E17195824AB003A98AF /* adcenter.png */; };
 		F0FE3E1B195824AB003A98AF /* moneyexchange.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE3E18195824AB003A98AF /* moneyexchange.png */; };
 		F0FE3E1C195824AB003A98AF /* moneydetail.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE3E19195824AB003A98AF /* moneydetail.png */; };
-		F0FE3E1F1958277C003A98AF /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE3E1D1958277C003A98AF /* share.png */; };
-		F0FE3E201958277C003A98AF /* invite.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE3E1E1958277C003A98AF /* invite.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -270,6 +275,12 @@
 		F00A9C6D1957C195001C1449 /* ShareSDKShareActionSheet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKShareActionSheet.framework; sourceTree = "<group>"; };
 		F00A9C921957C2A1001C1449 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		F00A9C941957C2C3001C1449 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		F011EECF195A6DA00092523F /* LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchViewController.h; sourceTree = "<group>"; };
+		F011EED0195A6DA00092523F /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchViewController.m; sourceTree = "<group>"; };
+		F011EED4195A964F0092523F /* personNow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personNow.png; sourceTree = "<group>"; };
+		F011EED6195A98DF0092523F /* topCellBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topCellBG.png; sourceTree = "<group>"; };
+		F011EED8195AA88B0092523F /* invite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invite.png; sourceTree = "<group>"; };
+		F011EEDA195AA9480092523F /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		F027C6FD1941865F006CF247 /* MainTopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainTopCell.xib; sourceTree = "<group>"; };
 		F027C6FF19418690006CF247 /* MainTapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTapCell.h; sourceTree = "<group>"; };
 		F027C70019418690006CF247 /* MainTapCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTapCell.m; sourceTree = "<group>"; };
@@ -301,6 +312,7 @@
 		F0383E77195274DE00CEB75C /* SINGLETON_GCD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SINGLETON_GCD.h; sourceTree = "<group>"; };
 		F0383E78195274EF00CEB75C /* CBKeyChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBKeyChain.h; sourceTree = "<group>"; };
 		F0383E79195274EF00CEB75C /* CBKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBKeyChain.m; sourceTree = "<group>"; };
+		F03E4970195ACB65001076C5 /* notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification.png; sourceTree = "<group>"; };
 		F04A55311958126100361F42 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		F04A55321958126100361F42 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		F04A55331958126100361F42 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
@@ -532,11 +544,11 @@
 		F0C8EEFE19405B9100EAC2DE /* FatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FatherViewController.m; sourceTree = "<group>"; };
 		F0DF0F89194B02240079E8B9 /* navigationbar_44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_44.png; sourceTree = "<group>"; };
 		F0DF0F8A194B02240079E8B9 /* navigationbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar.png; sourceTree = "<group>"; };
+		F0FD9AFD195AC0330015CD73 /* ScrollLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLabelView.h; sourceTree = "<group>"; };
+		F0FD9AFE195AC0330015CD73 /* ScrollLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollLabelView.m; sourceTree = "<group>"; };
 		F0FE3E17195824AB003A98AF /* adcenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adcenter.png; sourceTree = "<group>"; };
 		F0FE3E18195824AB003A98AF /* moneyexchange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moneyexchange.png; sourceTree = "<group>"; };
 		F0FE3E19195824AB003A98AF /* moneydetail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moneydetail.png; sourceTree = "<group>"; };
-		F0FE3E1D1958277C003A98AF /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
-		F0FE3E1E1958277C003A98AF /* invite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invite.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -970,6 +982,7 @@
 		F0A20AA71948331200444593 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F0FD9AFC195AC0270015CD73 /* ScrollLabelView */,
 				F08EF31C1952EFF400B49F8B /* RNGridMenu */,
 				F007B86A195040C200558CD0 /* MBHUD */,
 				F076123519496D07003C3171 /* MDScratchImageView */,
@@ -982,6 +995,8 @@
 			children = (
 				F0C8EEFD19405B9100EAC2DE /* FatherViewController.h */,
 				F0C8EEFE19405B9100EAC2DE /* FatherViewController.m */,
+				F011EECF195A6DA00092523F /* LaunchViewController.h */,
+				F011EED0195A6DA00092523F /* LaunchViewController.m */,
 				F0893A751957F8F90038A553 /* Invite */,
 				F00A9C961957C355001C1449 /* Share */,
 				F0A20AD219485BFF00444593 /* Question */,
@@ -997,6 +1012,11 @@
 		F0A20AAD19483C7400444593 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F03E4970195ACB65001076C5 /* notification.png */,
+				F011EEDA195AA9480092523F /* share.png */,
+				F011EED8195AA88B0092523F /* invite.png */,
+				F011EED6195A98DF0092523F /* topCellBG.png */,
+				F011EED4195A964F0092523F /* personNow.png */,
 				F0C064F119596A9000DA3EFA /* AppIcon-h@2x.png */,
 				F0C064E9195969DF00DA3EFA /* AppIcon-s.png */,
 				F0C064EA195969DF00DA3EFA /* AppIcon-s@2x.png */,
@@ -1005,8 +1025,6 @@
 				F0C06401195838BE00DA3EFA /* Default-568h@2x.png */,
 				F0C06402195838BE00DA3EFA /* Default.png */,
 				F0C06403195838BE00DA3EFA /* Default@2x.png */,
-				F0FE3E1D1958277C003A98AF /* share.png */,
-				F0FE3E1E1958277C003A98AF /* invite.png */,
 				F0FE3E17195824AB003A98AF /* adcenter.png */,
 				F0FE3E18195824AB003A98AF /* moneyexchange.png */,
 				F0FE3E19195824AB003A98AF /* moneydetail.png */,
@@ -1335,6 +1353,15 @@
 			name = Category;
 			sourceTree = "<group>";
 		};
+		F0FD9AFC195AC0270015CD73 /* ScrollLabelView */ = {
+			isa = PBXGroup;
+			children = (
+				F0FD9AFD195AC0330015CD73 /* ScrollLabelView.h */,
+				F0FD9AFE195AC0330015CD73 /* ScrollLabelView.m */,
+			);
+			path = ScrollLabelView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1419,11 +1446,14 @@
 				F0C064C619594D9400DA3EFA /* mejust_fashion_menu_line.png in Resources */,
 				F0C064D519594D9400DA3EFA /* return.png in Resources */,
 				F0C064C719594D9400DA3EFA /* mijiasc.png in Resources */,
+				F011EED7195A98DF0092523F /* topCellBG.png in Resources */,
 				F0C064B319594D9400DA3EFA /* back-button.png in Resources */,
 				F0C064F219596A9000DA3EFA /* AppIcon-h@2x.png in Resources */,
 				F0C064C319594D9400DA3EFA /* left_arror.png in Resources */,
 				F00A9C751957C195001C1449 /* Resource.bundle in Resources */,
+				F011EED9195AA88B0092523F /* invite.png in Resources */,
 				F00A9C861957C196001C1449 /* ShareSDKFlatShareViewUI.bundle in Resources */,
+				F03E4971195ACB65001076C5 /* notification.png in Resources */,
 				F0C064DF19594D9400DA3EFA /* shopshoucang.png in Resources */,
 				F04DA10E194AA08E00997E10 /* QuestionCell.xib in Resources */,
 				F0A20AB219483C7400444593 /* disk.jpg in Resources */,
@@ -1455,6 +1485,7 @@
 				F0C064E719594D9400DA3EFA /* weiji.png in Resources */,
 				F0C2F6EE1957D3E900CB73D6 /* navigation_back.png in Resources */,
 				F0C064E819594D9400DA3EFA /* zhoubian.png in Resources */,
+				F011EED5195A964F0092523F /* personNow.png in Resources */,
 				F0C064E119594D9400DA3EFA /* topscrollview_top_bg.png in Resources */,
 				F0C064ED195969DF00DA3EFA /* AppIcon-s.png in Resources */,
 				F0A20AB319483C7400444593 /* lottery_award@2x.png in Resources */,
@@ -1464,9 +1495,7 @@
 				F05C395419419FA400DDFC70 /* PunchBoxAdRes.bundle in Resources */,
 				F0C064D419594D9400DA3EFA /* reload-button.png in Resources */,
 				F0C064C419594D9400DA3EFA /* login_bg.png in Resources */,
-				F0FE3E201958277C003A98AF /* invite.png in Resources */,
 				F0C064CB19594D9400DA3EFA /* password.png in Resources */,
-				F0FE3E1F1958277C003A98AF /* share.png in Resources */,
 				F0C064B519594D9400DA3EFA /* cuxiao.png in Resources */,
 				F0DF0F8B194B02240079E8B9 /* navigationbar_44.png in Resources */,
 				F04DA11B194AD28600997E10 /* icon_change_accessory@2x.png in Resources */,
@@ -1489,6 +1518,7 @@
 				F0C064E019594D9400DA3EFA /* topScroll_bg.png in Resources */,
 				F0C064E519594D9400DA3EFA /* wap_down.png in Resources */,
 				F0C064DE19594D9400DA3EFA /* shequ.png in Resources */,
+				F011EEDB195AA9480092523F /* share.png in Resources */,
 				F04A55351958126100361F42 /* ShareViewController.xib in Resources */,
 				F0C064C919594D9400DA3EFA /* navigation bar.png in Resources */,
 				F0C064AA19594D9400DA3EFA /* 37x-Checkmark@2x.png in Resources */,
@@ -1549,10 +1579,12 @@
 				F0C064501959473100DA3EFA /* AFJSONRequestOperation.m in Sources */,
 				F0C8EEEC19405A4700EAC2DE /* NSTimer+Addition.m in Sources */,
 				F0C064521959473100DA3EFA /* AFNetworkActivityIndicatorManager.m in Sources */,
+				F0FD9AFF195AC0330015CD73 /* ScrollLabelView.m in Sources */,
 				F0A20AD119485BF900444593 /* QuestionViewController.m in Sources */,
 				F0C064531959473100DA3EFA /* AFPropertyListRequestOperation.m in Sources */,
 				F0C8EEEF19405A4700EAC2DE /* UIImage+Addition.m in Sources */,
 				F04A55341958126100361F42 /* ShareViewController.m in Sources */,
+				F011EED1195A6DA00092523F /* LaunchViewController.m in Sources */,
 				F0C064561959473100DA3EFA /* UIImageView+AFNetworking.m in Sources */,
 				F0C8EEB21940598B00EAC2DE /* CBAppDelegate.m in Sources */,
 				F0A20ABE194845B700444593 /* MoneyDetailViewController.m in Sources */,
