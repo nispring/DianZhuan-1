@@ -14,4 +14,6 @@
 + (NSString *)getRandomNumber:(int)from to:(int)to;
 
 + (NSString *)getCurrentTime;
+
++ (BOOL)isTodayDateWithData:(NSDate *)date otherDate:(NSDate *)otherDate;
 @end

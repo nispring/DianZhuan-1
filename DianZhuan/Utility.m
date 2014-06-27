@@ -44,5 +44,32 @@
     return currentDateStr;
 }
 
+//判断当前时间和服务端时间间隔
++ (BOOL)isTodayDateWithData:(NSDate *)localDate otherDate:(NSDate *)serverDate{
+    //NSDate存储的是世界标准时(UTC),和本地间隔八小时，输出时需要根据时区转换为本地时间
+
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSDate *newLocalDate = [localDate  dateByAddingTimeInterval: [zone secondsFromGMTForDate: localDate]];
+    NSDate *newServerDate = [serverDate  dateByAddingTimeInterval: [zone secondsFromGMTForDate: serverDate]];
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    unsigned int unitFlags = NSDayCalendarUnit;
+    NSDateComponents *comps = [gregorian components:unitFlags fromDate:newLocalDate  toDate:newServerDate  options:0];
+    int days = [comps day];
+    
+    if(days==0){
+        NSDate *recordDate = [USER_DEFAULT objectForKey:RECORDDATE];
+        if(recordDate){
+            NSDateComponents *tmpComps = [gregorian components:unitFlags fromDate:recordDate  toDate:newServerDate  options:0];
+            if([tmpComps day]<=0){
+                return NO;
+            }
+        }
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
 
 @end

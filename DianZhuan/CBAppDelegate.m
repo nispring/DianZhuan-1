@@ -32,6 +32,14 @@
                             [NSArray arrayWithObjects:UITextAttributeTextColor,UITextAttributeFont,UITextAttributeTextShadowColor,nil]];
     [[UINavigationBar appearance] setTitleTextAttributes:dict];
 
+    //极光推送
+    [APService
+     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound |
+                                         UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
+    [self initConfigWithOptions];
+
+    
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         [UINavigationBar appearance].tintColor = [UIColor colorWithStr:@"B52020"];
     } else {
@@ -49,6 +57,7 @@
         //保存在keychain
         [CBKeyChain save:TOTOLINTEGRAL data:@"10000"];
         [CBKeyChain save:INCOME data:@"10000"];
+
         [CBKeyChain save:EXPEND data:@"0"];
         [CBKeyChain save:YOUMI data:@"0"];
         [CBKeyChain save:CHUKONG data:@"0"];
@@ -67,6 +76,10 @@
                 //记录唯一标示用户
                 [CBKeyChain save:USERID data:bmob.objectId];
                 [[RecordManager sharedRecordManager] updateRecordWithContent:@"首次赠送积分" andIntegral:@"+10000"];
+                
+                //为devicetoken添加别名 实现消息个推
+                [APService setAlias:bmob.objectId callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+
             }
             
         }];
@@ -89,27 +102,27 @@
             }
     }];
     
-    [self initConfigWithOptions:launchOptions];
+
     return YES;
 }
 
-- (void)initConfigWithOptions:(NSDictionary *)launchOptions{
+//为devicetoken添加别名 实现消息个推
+- (void)tagsAliasCallback:(int)iResCode tags:(NSSet*)tags alias:(NSString*)alias{
+    NSLog(@"rescode: %d, \ntags: %@, \nalias: %@\n", iResCode, tags , alias);
+    
+}
+
+- (void)initConfigWithOptions{
     //shareSdk
     [ShareSDK registerApp:@"20c2d784a61f"];
     [self initializePlat];
     [self initializePlatForTrusteeship];
 
-    //极光推送
-    [APService
-     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound |
-         UIRemoteNotificationTypeAlert)];
-    [APService setupWithOption:launchOptions];
-
     //有米
     [YouMiConfig launchWithAppID:@"d92f75fb16b0b4c6" appSecret:@"ca7bb68f7bc2af0f"];
     
     //触控
-    [PunchBoxAd startSession:@"820376249-0F232B-9E34-30B0-2F76F2E9B"];
+    [PunchBoxAd startSession:@"820376262-3BB48B-ED3A-CAE4-AF3149C13"];
     
     //万普
     [AppConnect getConnect:@"38718de31b979ca9792dd462523c68c2" pid:@"appstore"];
@@ -157,6 +170,15 @@
                         wxDelegate:self];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    [APService registerDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    [APService handleRemoteNotification:userInfo];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

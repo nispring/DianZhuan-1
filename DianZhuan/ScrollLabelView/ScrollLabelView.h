@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ScrollLabelView : UIView
-
+@property (nonatomic,strong)UILabel *label;
 
 - (id)initWithFrame:(CGRect)frame WithContent:(NSString *)content;
 @end

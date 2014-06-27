@@ -12,7 +12,6 @@
 @implementation RecordManager
 SINGLETON_GCD(RecordManager);
 
-
 - (NSMutableArray *)loadRecord{
     NSMutableArray *tmpArray = [[NSMutableArray alloc]initWithArray:[USER_DEFAULT objectForKey:[CBKeyChain load:USERID]]];
     return tmpArray;

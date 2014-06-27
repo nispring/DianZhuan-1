@@ -8,13 +8,13 @@
 
 #import "MainViewController.h"
 #import "CBAppDelegate.h"
-#import "MainTapCell.h"
 #import "TurntableViewController.h"
 #import "ScratchViewController.h"
 #import "MoneyExchangeViewController.h"
 #import "MoneyDetailViewController.h"
 #import "QuestionViewController.h"
 #import "TaskCell.h"
+#import "MainTapCell.h"
 
 #import "YouMiWall.h"
 #import "YouMiPointsManager.h"
@@ -29,16 +29,21 @@
 #import "InviteViewController.h"
 
 #import "ScrollLabelView.h"
-@interface MainViewController ()<PBOfferWallDelegate,DMOfferWallManagerDelegate,MopanAdWallDelegate,RNGridMenuDelegate>
+#import "AFHelper.h"
+#import "BundleHelper.h"
+
+@interface MainViewController ()<PBOfferWallDelegate,DMOfferWallManagerDelegate,MopanAdWallDelegate,RNGridMenuDelegate,UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong)DMOfferWallManager *dmManager;
 @property (nonatomic,)MopanAdWall *MopanAdWall;
+
 @property (nonatomic,strong)MainTapCell *mainTopCell;
+
 @property (nonatomic,strong)TaskCell *taskCell;
 @property (nonatomic,strong)ScrollLabelView *scrollLabel;
 @property (nonatomic,strong)UIRefreshControl *refreshControl;
 @property (nonatomic,strong)NSArray *dataArray;
-
+@property (nonatomic,strong)NSString *notifiStr;
 @end
 
 @implementation MainViewController
@@ -49,7 +54,6 @@
     if(IOS_7){
         self.edgesForExtendedLayout = 0;
     }
-    
     UIButton *rightButton = [[UIButton alloc]init];
     UIImageView *imageview = [[UIImageView alloc]init];
     imageview.image = [UIImage imageNamed:@"menuButton"];
@@ -62,32 +66,34 @@
     
     self.dataArray =
     @[@{@"icon":@"adcenter",@"title":@"任务平台",@"subTitle":@"快来赚取积分吧"},
-      @{@"icon":@"icon_youmi@2x",@"title":@"每日签到"
+      @{@"icon":@"SignIn",@"title":@"每日签到"
         ,@"subTitle":@"转盘大抽奖，人品大爆发"},
       @{@"icon":@"share",@"title":@"邀请好友",@"subTitle":@"分享给好友，轻松得积分"},
       @{@"icon":@"invite",@"title":@"填写邀请人 "
         ,@"subTitle":@"填写邀请人，轻松领取100积分"}
       ];
 
-    
-    NSArray *MainTopNib = [[NSBundle mainBundle]loadNibNamed:@"MainTopCell"owner:self options:nil];
-    self.mainTopCell = [MainTopNib objectAtIndex:0];
-    self.mainTopCell.idLabel.text = [CBKeyChain load:USERID];
-    self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
-    self.mainTopCell.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topCellBG"]];
-    self.tableView.tableHeaderView = _mainTopCell;
-    
     self.refreshControl = [[UIRefreshControl alloc]init];
     self.refreshControl.tintColor = [UIColor grayColor];
     self.refreshControl.attributedTitle = [[NSAttributedString alloc]initWithString:@"下拉刷新"];
     [self.refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     
+    self.mainTopCell = [[[NSBundle mainBundle]loadNibNamed:@"MainTopCell"owner:self options:nil] lastObject];
+    self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
+    self.mainTopCell.idLabel.text = [CBKeyChain load:USERID];
+    self.mainTopCell.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topCellBG"]];
+    self.tableView.tableHeaderView = _mainTopCell;
     self.tableView.tableFooterView = [[UIView alloc]init];
-    self.tableView.backgroundColor = [UIColor clearColor];
+
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //检测更新
+    [self checkVersion];
+    
     //有米
     [YouMiWall enable];
     [YouMiPointsManager enable];
@@ -106,17 +112,20 @@
     //磨盘
     self.MopanAdWall = [[MopanAdWall alloc]initWithMopan:@"12703" withAppSecret:@"5vvayxpa9vfk3osl"];
     self.MopanAdWall.delegate = self;
-
+    
+    //查询积分
     [self queryIntegral];
     
     //刷新当前积分
     [NOTIFICATION_CENTER addObserver:self selector:@selector(UpdateIntegral) name:@"UpdateIntegral" object:nil];
-    
+ 
     //首次进入自动刷新
     [self.tableView setContentOffset:CGPointMake(0, -75) animated:YES];
     [self.refreshControl beginRefreshing];
     [self refreshView:self.refreshControl];
+
 }
+
 - (void)doMenu{
     NSInteger numberOfOptions = 2;
     NSArray *items = @[
@@ -145,7 +154,7 @@
 }
 
 - (void)UpdateIntegral{
-    _mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
+    self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
 }
 
 -(void)handleData
@@ -154,13 +163,15 @@
     [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
         if (object) {
             //得到playerName和cheatMode
-            NSString *notificationStr = [object objectForKey:@"notification"];
-            DLog(@"%@",notificationStr);
+            self.notifiStr = [object objectForKey:@"notification"];
             if(self.scrollLabel){
                 [self.scrollLabel removeFromSuperview];
             }
-            self.scrollLabel = [[ScrollLabelView alloc]initWithFrame:CGRectMake(0, 0, APP_SCREEN_WIDTH, 25) WithContent:notificationStr];
-            [self.view addSubview:_scrollLabel];
+            if(_notifiStr.length>0){
+                self.scrollLabel = [[ScrollLabelView alloc]initWithFrame:CGRectMake(0, 0, APP_SCREEN_WIDTH, 25) WithContent:_notifiStr];
+                [self.view addSubview:_scrollLabel];
+            }
+            
 
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"MM-dd hh:mm"];
@@ -174,7 +185,16 @@
     }];
     
 }
+- (void)viewDidAppear:(BOOL)animated{
+    if(self.scrollLabel){
+        [self.scrollLabel removeFromSuperview];
+    }
+    if(_notifiStr.length>0){
+        self.scrollLabel = [[ScrollLabelView alloc]initWithFrame:CGRectMake(0, 0, APP_SCREEN_WIDTH, 25) WithContent:_notifiStr];
+        [self.view addSubview:_scrollLabel];
+    }
 
+}
 -(void)refreshView:(UIRefreshControl *)refresh
 {
     if (refresh.refreshing) {
@@ -198,6 +218,7 @@
     return 80;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:
@@ -205,8 +226,14 @@
             break;
         case 1:
         {
-            TurntableViewController *vc = [[TurntableViewController alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
+            //获取bmob后台时间 为时间戳，需转换
+            NSDate *serverDate = [NSDate dateWithTimeIntervalSince1970:[[Bmob getServerTimestamp] intValue]];
+            if([Utility isTodayDateWithData:serverDate otherDate:[NSDate date]]){
+                TurntableViewController *vc = [[TurntableViewController alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+            }else{
+                [MBHUDView hudWithBody:@"明天再来吧" type:MBAlertViewHUDTypeExclamationMark hidesAfter:2.5 show:YES];
+            }
             break;
         }
         case 2:
@@ -229,17 +256,16 @@
 - (void)showGrid {
     NSInteger numberOfOptions = 5;
     NSArray *items = @[
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_youmi@2x"] title:@"有米平台"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_youmi@2x"] title:@"触控平台"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_youmi@2x"] title:@"多盟平台"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_youmi@2x"] title:@"万普平台"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_youmi@2x"] title:@"磨盘平台"]
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_youmi"] title:@"有米平台"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_chukong"] title:@"触控平台"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_duomeng"] title:@"多盟平台"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_wanpu"] title:@"万普平台"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:@"icon_mopan"] title:@"磨盘平台"]
                        ];
     
     RNGridMenu *av = [[RNGridMenu alloc] initWithItems:[items subarrayWithRange:NSMakeRange(0, numberOfOptions)]];
     av.delegate = self;
     av.menuView.tag = 100;
-    //    av.bounces = NO;
     [av showInViewController:self center:CGPointMake(self.view.bounds.size.width/2.f, self.view.bounds.size.height/2.f)];
 }
 - (void)gridMenu:(RNGridMenu *)gridMenu willDismissWithSelectedItem:(RNGridMenuItem *)item atIndex:(NSInteger)itemIndex {
@@ -290,7 +316,9 @@
 //有米 回调
 - (void)pointsGotted:(NSNotification *)notification {
     [YouMiPointsManager pointsRemained];
-    DLog(@"有米总积分：%d",*[YouMiPointsManager pointsRemained]);
+    NSString *integral = [NSString stringWithFormat:@"%d",*[YouMiPointsManager pointsRemained]];
+    [self updateIntegralWithADType:1 andIntegral:integral];
+
 }
 
 //触控回调
@@ -310,7 +338,9 @@
     for(NSDictionary *dic in taskCoins){
         totalCoins += [dic[@"coins"]intValue];
     }
-    DLog(@"触控总积分:%d",totalCoins);
+    NSString *integral = [NSString stringWithFormat:@"%d",totalCoins];
+    [self updateIntegralWithADType:2 andIntegral:integral];
+
 }
 //多盟
 // 积分查询成功之后,回调该接⼝口,获取总积分和总已消费积分。
@@ -318,13 +348,17 @@
         receivedTotalPoint:(NSNumber *)totalPoint
         totalConsumedPoint:(NSNumber *)consumedPoint{
     
-    DLog(@"多盟总积分：%@",totalPoint);
+    NSString *integral = [NSString stringWithFormat:@"%@",totalPoint];
+    [self updateIntegralWithADType:3 andIntegral:integral];
+
 }
 
 //万普通知
 -(void)onGetPointsSuccess:(NSNotification*)notifyObj{
     WapsUserPoints *userPoints = notifyObj.object;
-    NSLog(@"万普总积分:%d", [userPoints getPointsValue]);
+    NSString *integral = [NSString stringWithFormat:@"%d",[userPoints getPointsValue]];
+    [self updateIntegralWithADType:4 andIntegral:integral];
+
 }
 
 //磨盘
@@ -336,6 +370,8 @@
 - (void)adwallSuccessGetMoney:(NSInteger)totalMoney forMoneyName:(NSString*)moneyName
 {
     NSLog(@"磨盘总积分：%d",(int)totalMoney);
+    NSString *integral = [NSString stringWithFormat:@"%d",totalMoney];
+    [self updateIntegralWithADType:5 andIntegral:integral];
 }
 - (void)adwallDidShowAppsStartLoad{
     
@@ -378,12 +414,21 @@
     }
     //如果该平台获取到得积分大于keychai中积分
     NSString *subStr = [NSString stringWithFormat:@"%d",[newIntegral intValue]>[oldIntegral intValue]];
-    if(subStr > 0){
+    
+    if([subStr intValue] > 0){
+        
+        //提示用户获得多少积分
+        [UIAlertView showAlertViewWithMessage:[NSString stringWithFormat:@"恭喜获得%@ %@积分",adName,subStr]];
+        
         //保存在keychain
         NSString *newTotalIntegral = [NSString stringWithFormat:@"%d",[[CBKeyChain load:TOTOLINTEGRAL] intValue]+[subStr intValue]];
         [CBKeyChain save:TOTOLINTEGRAL data:newTotalIntegral];
         [CBKeyChain save:adId data:newIntegral];
         [[RecordManager sharedRecordManager] updateRecordWithContent:adName andIntegral:[NSString stringWithFormat:@"+%@",subStr]];
+        
+        //通知刷新积分
+        [NOTIFICATION_CENTER postNotificationName:@"UpdateIntegral" object:nil];
+        
         
         //更新bmob Users表
         BmobQuery   *bquery = [BmobQuery queryWithClassName:@"User"];
@@ -409,6 +454,34 @@
     }
 }
 
+
+
+//检测更新
+- (void)checkVersion{
+    [AFHelper downDataWithViewController:self Dictionary:nil andBaseURLStr:@"http://itunes.apple.com/" andPostPath:@"lookup?id=893523283" success:^(NSDictionary *dic){
+        NSArray *configData = [dic valueForKey:@"results"];
+        NSString *version;
+        for (id config in configData)
+        {
+            version = [config valueForKey:@"version"];
+        }
+        NSString *oldVersion = [BundleHelper bundleShortVersionString];
+        DLog(@"12313%@ %@",oldVersion,version);
+        if ([version isEqualToString:oldVersion])
+        {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"有新版本啦" message:nil delegate:self cancelButtonTitle:@"下次再说" otherButtonTitles:@"立即更新", nil];
+            [alert show];
+        }else{
+        }
+    }];
+}
+#pragma mark uialertView delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex==1){
+        NSString *iTunesLink = @"https://itunes.apple.com/cn/app/mi-jia/893523283?mt=8";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {

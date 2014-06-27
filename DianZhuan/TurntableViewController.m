@@ -23,24 +23,31 @@
 
 - (void)loadView{
     [super loadView];
+    self.title = @"每日签到";
     if(IOS_7){
         self.edgesForExtendedLayout = 0;
     }
+    UIImageView *bgImageview = [[UIImageView alloc]init];
+    bgImageview.image = [UIImage imageNamed:@"trunBG"];
+    bgImageview.frame = CGRectMake(0, 0, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT-64);
+    [self.view addSubview:bgImageview];
+    
+    
     //添加转盘
-    UIImageView *image_disk = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"disk.jpg"]];
-    image_disk.frame = CGRectMake(0.0, 0.0, 320.0, 320.0);
+    UIImageView *image_disk = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"disk"]];
+    image_disk.frame = CGRectMake(20.0, 60.0, 280.0, 280.0);
     image1 = image_disk;
     [self.view addSubview:image1];
     
     //添加转针
     UIImageView *image_start = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"start.png"]];
-    image_start.frame = CGRectMake(103.0, 55.0, 120.0, 210.0);
+    image_start.frame = CGRectMake(112.0, 100.0, 100.0, 200.0);
     image2 = image_start;
     [self.view addSubview:image2];
     
     //添加按钮
     btn_start = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn_start.frame = CGRectMake(130.0, 130.0, 70.0, 70.0);
+    btn_start.frame = CGRectMake(130.0, 160.0, 70.0, 70.0);
     [btn_start addTarget:self action:@selector(choujiang) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn_start];
     
@@ -57,6 +64,11 @@
 
 - (void)choujiang
 {
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSDate *localDate = [[NSDate date]  dateByAddingTimeInterval: [zone secondsFromGMTForDate: [NSDate date]]];
+    [USER_DEFAULT setObject:localDate forKey:RECORDDATE];
+
+    
     btn_start.enabled = NO;
     //  概率测试
     //    NSInteger count01=0;
@@ -126,27 +138,63 @@
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     //判断抽奖结果
+    int integral;
     
     if (orign ==12) {
-        UIAlertView *result = [[UIAlertView alloc] initWithTitle:@"恭喜中奖！" message:@"8元！ " delegate:self cancelButtonTitle:@"领奖去！" otherButtonTitles: nil];
-        [result show];
+        integral = 800;
     }else if (orign == 9)
     {
-        UIAlertView *result = [[UIAlertView alloc] initWithTitle:@"恭喜中奖！" message:@"3元！ " delegate:self cancelButtonTitle:@"领奖去！" otherButtonTitles: nil];
-        [result show];
+        integral = 300;
     }else if (orign ==5 || orign == 2)
     {
-        UIAlertView *result = [[UIAlertView alloc] initWithTitle:@"恭喜中奖！" message:@"五毛！ " delegate:self cancelButtonTitle:@"领奖去！" otherButtonTitles: nil];
-        [result show];
+        integral = 500;
     }else if (orign == 3 ||orign == 7 || orign == 11)
     {
-        UIAlertView *result = [[UIAlertView alloc] initWithTitle:@"恭喜中奖！" message:@"1毛 " delegate:self cancelButtonTitle:@"领奖去！" otherButtonTitles: nil];
-        [result show];
+        integral = 100;
     }else
     {
-        UIAlertView *result = [[UIAlertView alloc] initWithTitle:@"谢谢参与" message:@"未中奖" delegate:self cancelButtonTitle:@"确定！" otherButtonTitles: nil];
-        [result show];
-    }    btn_start.enabled = YES;
+        integral = 0;
+    }
+    btn_start.enabled = YES;
+    
+    if(integral >0){
+        NSString *newIncome = [NSString stringWithFormat:@"%d",[[CBKeyChain load:INCOME]intValue]+integral];
+        NSString *newTotal = [NSString stringWithFormat:@"%d",[[CBKeyChain load:TOTOLINTEGRAL] intValue]+integral];
+        [CBKeyChain save:INCOME data:newIncome];
+        [CBKeyChain save:TOTOLINTEGRAL data:newTotal];
+        [[RecordManager sharedRecordManager]updateRecordWithContent:@"签到抽奖" andIntegral:[NSString stringWithFormat:@"+%d",integral]];
+        //通知刷新积分
+        [NOTIFICATION_CENTER postNotificationName:@"UpdateIntegral" object:nil];
+
+        //更新bmob Users表
+        BmobQuery   *bquery = [BmobQuery queryWithClassName:@"User"];
+        [bquery getObjectInBackgroundWithId:[CBKeyChain load:USERID] block:^(BmobObject *object,NSError *error){
+            if (!error) {
+                if (object) {
+                    [object setObject:newTotal forKey:TOTOLINTEGRAL];
+                    [object updateInBackground];
+                }
+            }else{
+            }
+        }];
+        
+        //上传bmob IncomeRecord表
+        BmobObject *gameScore = [BmobObject objectWithClassName:@"IncomeRecord"];
+        [gameScore setObject:[CBKeyChain load:USERID] forKey:@"userId"];
+        [gameScore setObject:@"签到抽奖" forKey:@"type"];
+        [gameScore setObject:[NSString stringWithFormat:@"%d",integral] forKey:@"integral"];
+        [gameScore saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+            
+        }];
+
+    }
+    
+    MBAlertView *alert = [MBAlertView alertWithBody:[NSString stringWithFormat:@"恭喜你，抽中%d积分",integral] cancelTitle:@"好的" cancelBlock:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [alert addToDisplayQueue];
+
+    
 }
 - (void)didReceiveMemoryWarning
 {

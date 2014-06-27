@@ -7,7 +7,8 @@
 //
 
 #import "LaunchViewController.h"
-
+#import "AFHelper.h"
+#import "BundleHelper.h"
 @interface LaunchViewController ()
 
 @end
