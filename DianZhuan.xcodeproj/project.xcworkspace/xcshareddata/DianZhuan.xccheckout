@@ -5,15 +5,13 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>35824C87-5649-4DDE-82AA-8E904763D1B7</string>
+	<string>919BEF9D-2FDA-4880-9470-4FC873033BE9</string>
 	<key>IDESourceControlProjectName</key>
 	<string>DianZhuan</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>4B28D970-12EF-49A6-A7F6-F99B77B5D842</key>
 		<string>ssh://github.com/liu541100186/DianZhuan.git</string>
-		<key>D31F25EB-E81B-422C-A8EF-3D138308CD8B</key>
-		<string>https://github.com/liu541100186/DianZhuan.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>DianZhuan.xcodeproj/project.xcworkspace</string>
@@ -21,8 +19,6 @@
 	<dict>
 		<key>4B28D970-12EF-49A6-A7F6-F99B77B5D842</key>
 		<string>../..</string>
-		<key>D31F25EB-E81B-422C-A8EF-3D138308CD8B</key>
-		<string>../../DianZhuan</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/liu541100186/DianZhuan.git</string>
@@ -37,14 +33,6 @@
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>4B28D970-12EF-49A6-A7F6-F99B77B5D842</string>
-			<key>IDESourceControlWCCName</key>
-			<string>DianZhuan</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D31F25EB-E81B-422C-A8EF-3D138308CD8B</string>
 			<key>IDESourceControlWCCName</key>
 			<string>DianZhuan</string>
 		</dict>
