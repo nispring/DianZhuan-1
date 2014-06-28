@@ -15,5 +15,4 @@
 
 + (NSString *)getCurrentTime;
 
-+ (BOOL)isTodayDateWithData:(NSDate *)date otherDate:(NSDate *)otherDate;
 @end

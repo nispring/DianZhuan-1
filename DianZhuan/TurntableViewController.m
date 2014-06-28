@@ -80,9 +80,10 @@
 - (void)choujiang
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd"];
-    NSString *newLocalDay = [dateFormatter stringFromDate:[NSDate date]];
-    [USER_DEFAULT setObject:newLocalDay forKey:RECORDDATE];
+    [dateFormatter setDateFormat:@"yyyy-mm-dd"];
+    NSString *turnDate = [dateFormatter stringFromDate:[NSDate date]];
+    [CBKeyChain save:RECORDDATE data:turnDate];
+
 
     
     

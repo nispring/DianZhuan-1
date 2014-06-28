@@ -43,27 +43,5 @@
     return currentDateStr;
 }
 
-//判断当前时间和服务端时间间隔
-+ (BOOL)isTodayDateWithData:(NSDate *)localDate otherDate:(NSDate *)serverDate{
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd"];
-    NSString *newLocalDay = [dateFormatter stringFromDate:localDate];
-    NSString *newServerDay = [dateFormatter stringFromDate:serverDate];
-    //判断本地时间和服务器时间是不是在同一天
-    if([newLocalDay isEqualToString:newServerDay]){
-        NSString *recordDay = [USER_DEFAULT objectForKey:RECORDDATE];
-        if(recordDay.length>0){
-            //判断当天有没有签到
-            if([recordDay isEqualToString:newServerDay]){
-                return NO;
-            }
-        }
-    }else{
-        return NO;
-    }
-    return YES;
-}
-
 
 @end
