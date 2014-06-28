@@ -70,7 +70,7 @@
         ,@"subTitle":@"转盘大抽奖，人品大爆发"},
       @{@"icon":@"share",@"title":@"邀请好友",@"subTitle":@"分享给好友，轻松得积分"},
       @{@"icon":@"invite",@"title":@"填写邀请人 "
-        ,@"subTitle":@"填写邀请人，轻松领取100积分"}
+        ,@"subTitle":@"轻松领取100积分"}
       ];
 
     self.refreshControl = [[UIRefreshControl alloc]init];
@@ -154,7 +154,9 @@
 }
 
 - (void)UpdateIntegral{
+    self.mainTopCell.idLabel.text = [CBKeyChain load:USERID];
     self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
+    
 }
 
 -(void)handleData
@@ -228,7 +230,7 @@
         {
             //获取bmob后台时间 为时间戳，需转换
             NSDate *serverDate = [NSDate dateWithTimeIntervalSince1970:[[Bmob getServerTimestamp] intValue]];
-            if([Utility isTodayDateWithData:serverDate otherDate:[NSDate date]]){
+            if([Utility isTodayDateWithData:[NSDate date] otherDate:serverDate]){
                 TurntableViewController *vc = [[TurntableViewController alloc]init];
                 [self.navigationController pushViewController:vc animated:YES];
             }else{

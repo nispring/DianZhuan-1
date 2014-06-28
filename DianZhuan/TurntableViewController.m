@@ -1,3 +1,4 @@
+
 //
 //  TurntableViewController.m
 //  DianZhuan
@@ -8,6 +9,7 @@
 
 #import "TurntableViewController.h"
 
+#import "ScrollLabelView.h"
 @interface TurntableViewController (){
     UIImageView *image1,*image2;
     UIButton *btn_start;
@@ -31,28 +33,41 @@
     bgImageview.image = [UIImage imageNamed:@"trunBG"];
     bgImageview.frame = CGRectMake(0, 0, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT-64);
     [self.view addSubview:bgImageview];
-    
+
     
     //添加转盘
     UIImageView *image_disk = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"disk"]];
-    image_disk.frame = CGRectMake(20.0, 60.0, 280.0, 280.0);
+    image_disk.frame = CGRectMake(20.0, (APP_SCREEN_HEIGHT-64-288)/2 , 280.0, 280.0);
     image1 = image_disk;
     [self.view addSubview:image1];
     
     //添加转针
     UIImageView *image_start = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"start.png"]];
-    image_start.frame = CGRectMake(112.0, 100.0, 100.0, 200.0);
+    image_start.frame = CGRectMake(112.0, (APP_SCREEN_HEIGHT-64-210)/2, 100.0, 200.0);
     image2 = image_start;
     [self.view addSubview:image2];
     
     //添加按钮
     btn_start = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn_start.frame = CGRectMake(130.0, 160.0, 70.0, 70.0);
+    btn_start.frame = CGRectMake(130.0, (APP_SCREEN_HEIGHT-64-80)/2, 70.0, 70.0);
     [btn_start addTarget:self action:@selector(choujiang) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn_start];
     
     random = .0;
     orign = .0;
+    
+    
+    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"AppStatus"];
+    [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
+        if (object) {
+            //得到playerName和cheatMode
+            NSString *notifiStr = [object objectForKey:@"turnNotification"];
+            ScrollLabelView *scrollLabel = [[ScrollLabelView alloc]initWithFrame:CGRectMake(0, 0, APP_SCREEN_WIDTH, 25) WithContent:notifiStr];
+            [self.view addSubview:scrollLabel];
+        }
+    }];
+    
+
     
 }
 
@@ -64,10 +79,12 @@
 
 - (void)choujiang
 {
-    NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSDate *localDate = [[NSDate date]  dateByAddingTimeInterval: [zone secondsFromGMTForDate: [NSDate date]]];
-    [USER_DEFAULT setObject:localDate forKey:RECORDDATE];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd"];
+    NSString *newLocalDay = [dateFormatter stringFromDate:[NSDate date]];
+    [USER_DEFAULT setObject:newLocalDay forKey:RECORDDATE];
 
+    
     
     btn_start.enabled = NO;
     //  概率测试
@@ -150,7 +167,7 @@
         integral = 500;
     }else if (orign == 3 ||orign == 7 || orign == 11)
     {
-        integral = 100;
+        integral = 10;
     }else
     {
         integral = 0;

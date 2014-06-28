@@ -1476,6 +1476,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "时代合盛";
 				TargetAttributes = {
+					F0C8EE9D1940598B00EAC2DE = {
+						DevelopmentTeam = MDE5X8NFF9;
+					};
 					F0C8EEB81940598B00EAC2DE = {
 						TestTargetID = F0C8EE9D1940598B00EAC2DE;
 					};
@@ -1750,6 +1753,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1788,6 +1792,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1807,39 +1812,7 @@
 		F0C8EECB1940598B00EAC2DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Deng WuPing (MXZVHW3TS6)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Connection",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Core",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/QQConnectSDK",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/UI",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DianZhuan/DianZhuan-Prefix.pch";
-				INFOPLIST_FILE = "DianZhuan/DianZhuan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DianZhuan/YouMi",
-					"$(PROJECT_DIR)/DianZhuan/ChuKong",
-					"$(PROJECT_DIR)/DianZhuan/DuoMeng",
-					"$(PROJECT_DIR)/DianZhuan/MoPan",
-					"$(PROJECT_DIR)/DianZhuan/JPush",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/SinaWeiboSDK",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/TencentWeiboSDK",
-					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/WeChatSDK",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		F0C8EECC1940598B00EAC2DE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1866,6 +1839,42 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		F0C8EECC1940598B00EAC2DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Connection",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Core",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/QQConnectSDK",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/UI",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DianZhuan/DianZhuan-Prefix.pch";
+				INFOPLIST_FILE = "DianZhuan/DianZhuan-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/DianZhuan/YouMi",
+					"$(PROJECT_DIR)/DianZhuan/ChuKong",
+					"$(PROJECT_DIR)/DianZhuan/DuoMeng",
+					"$(PROJECT_DIR)/DianZhuan/MoPan",
+					"$(PROJECT_DIR)/DianZhuan/JPush",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/SinaWeiboSDK",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/TencentWeiboSDK",
+					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/WeChatSDK",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -55,8 +55,8 @@
     
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]){
         //保存在keychain
-        [CBKeyChain save:TOTOLINTEGRAL data:@"10000"];
-        [CBKeyChain save:INCOME data:@"10000"];
+        [CBKeyChain save:TOTOLINTEGRAL data:@"100"];
+        [CBKeyChain save:INCOME data:@"100"];
 
         [CBKeyChain save:EXPEND data:@"0"];
         [CBKeyChain save:YOUMI data:@"0"];
@@ -68,14 +68,14 @@
         
         //上传bmob User表
         BmobObject *bmob = [BmobObject objectWithClassName:@"User"];
-        [bmob setObject:@"10000" forKey:TOTOLINTEGRAL];
-        [bmob setObject:@"10000" forKey:INCOME];
+        [bmob setObject:@"100" forKey:TOTOLINTEGRAL];
+        [bmob setObject:@"100" forKey:INCOME];
         [bmob saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
             if(isSuccessful){
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
                 //记录唯一标示用户
                 [CBKeyChain save:USERID data:bmob.objectId];
-                [[RecordManager sharedRecordManager] updateRecordWithContent:@"首次赠送积分" andIntegral:@"+10000"];
+                [[RecordManager sharedRecordManager] updateRecordWithContent:@"首次赠送积分" andIntegral:@"+100"];
                 
                 //为devicetoken添加别名 实现消息个推
                 [APService setAlias:bmob.objectId callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];

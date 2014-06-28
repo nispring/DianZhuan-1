@@ -34,7 +34,6 @@
         return @"";
     }
     tmpMinute = [minute integerValue];
-    DLog(@"tmpMinute %d",tmpMinute);
     if([components minute]<=9){
         minute = [NSString stringWithFormat:@"0%d",[components minute]];
     }
@@ -46,29 +45,24 @@
 
 //判断当前时间和服务端时间间隔
 + (BOOL)isTodayDateWithData:(NSDate *)localDate otherDate:(NSDate *)serverDate{
-    //NSDate存储的是世界标准时(UTC),和本地间隔八小时，输出时需要根据时区转换为本地时间
-
-    NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSDate *newLocalDate = [localDate  dateByAddingTimeInterval: [zone secondsFromGMTForDate: localDate]];
-    NSDate *newServerDate = [serverDate  dateByAddingTimeInterval: [zone secondsFromGMTForDate: serverDate]];
     
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    unsigned int unitFlags = NSDayCalendarUnit;
-    NSDateComponents *comps = [gregorian components:unitFlags fromDate:newLocalDate  toDate:newServerDate  options:0];
-    int days = [comps day];
-    
-    if(days==0){
-        NSDate *recordDate = [USER_DEFAULT objectForKey:RECORDDATE];
-        if(recordDate){
-            NSDateComponents *tmpComps = [gregorian components:unitFlags fromDate:recordDate  toDate:newServerDate  options:0];
-            if([tmpComps day]<=0){
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd"];
+    NSString *newLocalDay = [dateFormatter stringFromDate:localDate];
+    NSString *newServerDay = [dateFormatter stringFromDate:serverDate];
+    //判断本地时间和服务器时间是不是在同一天
+    if([newLocalDay isEqualToString:newServerDay]){
+        NSString *recordDay = [USER_DEFAULT objectForKey:RECORDDATE];
+        if(recordDay.length>0){
+            //判断当天有没有签到
+            if([recordDay isEqualToString:newServerDay]){
                 return NO;
             }
         }
-        return YES;
     }else{
         return NO;
     }
+    return YES;
 }
 
 
