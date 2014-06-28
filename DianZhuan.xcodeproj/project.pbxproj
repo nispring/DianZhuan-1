@@ -1837,9 +1837,11 @@
 					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/WeChatSDK",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0B27FA61-0157-4539-8D3B-324B5FB4C4FF";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1847,8 +1849,8 @@
 		F0C8EECC1940598B00EAC2DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Deng WuPing (MDE5X8NFF9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Deng WuPing (MDE5X8NFF9)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Connection",
@@ -1872,9 +1874,11 @@
 					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/DianZhuan/ShareSDK/Extend/WeChatSDK",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0B27FA61-0157-4539-8D3B-324B5FB4C4FF";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

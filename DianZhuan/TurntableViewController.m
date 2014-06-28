@@ -80,7 +80,7 @@
 - (void)choujiang
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-mm-dd"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *turnDate = [dateFormatter stringFromDate:[NSDate date]];
     [CBKeyChain save:RECORDDATE data:turnDate];
 

@@ -231,20 +231,25 @@
             //获取bmob后台时间 为时间戳，需转换
             NSDate *serverDate = [NSDate dateWithTimeIntervalSince1970:[[Bmob getServerTimestamp] intValue]];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-mm-dd"];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
             //服务器时间
             NSString *newServerDate = [dateFormatter stringFromDate:serverDate];
             //上次转盘时间
             NSString *turnDate = [CBKeyChain load:RECORDDATE];
+            
+            DLog(@"%@",turnDate);
+            DLog(@"%@",newServerDate);
             if(turnDate.length>0){
                 if([turnDate isEqualToString:newServerDate]){
                     [MBHUDView hudWithBody:@"明天再来吧" type:MBAlertViewHUDTypeExclamationMark hidesAfter:2.5 show:YES];
-                    return;
+                }else{
+                    TurntableViewController *vc = [[TurntableViewController alloc]init];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
+            }else{
+                TurntableViewController *vc = [[TurntableViewController alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
             }
-            TurntableViewController *vc = [[TurntableViewController alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
-            
             break;
         }
         case 2:
