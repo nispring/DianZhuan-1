@@ -439,6 +439,7 @@
     }
     //如果该平台获取到得积分大于keychai中积分
     NSString *subStr = [NSString stringWithFormat:@"%d",[newIntegral intValue]-[oldIntegral intValue]];
+    DLog(@"%@",[CBKeyChain load:WANPU]);
     if([subStr intValue] > 0){
         
         //提示用户获得多少积分
@@ -447,13 +448,11 @@
         //保存在keychain  总积分 和对应平台积分
         NSString *newTotalIntegral = [NSString stringWithFormat:@"%d",[[CBKeyChain load:TOTOLINTEGRAL] intValue]+[subStr intValue]];
         [CBKeyChain save:TOTOLINTEGRAL data:newTotalIntegral];
-        
-        [CBKeyChain save:adId data:subStr];
+        [CBKeyChain save:adId data:newIntegral];
         [[RecordManager sharedRecordManager] updateRecordWithContent:adName andIntegral:[NSString stringWithFormat:@"+%@",subStr]];
         
         //通知刷新积分
         [NOTIFICATION_CENTER postNotificationName:@"UpdateIntegral" object:nil];
-        
         
         //更新bmob Users表
         BmobQuery   *bquery = [BmobQuery queryWithClassName:@"User"];
