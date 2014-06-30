@@ -482,7 +482,6 @@
             version = [config valueForKey:@"version"];
         }
         NSString *oldVersion = [BundleHelper bundleShortVersionString];
-        DLog(@"12313%@ %@",oldVersion,version);
         if ([version isEqualToString:oldVersion])
         {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"有新版本啦" message:nil delegate:self cancelButtonTitle:@"下次再说" otherButtonTitles:@"立即更新", nil];
@@ -494,7 +493,7 @@
 #pragma mark uialertView delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex==1){
-        NSString *iTunesLink = @"https://itunes.apple.com/cn/app/mi-jia/893523283?mt=8";
+        NSString *iTunesLink = @"https://itunes.apple.com/us/app/jin-shou-zhipro/id893523283?l=zh&ls=1&mt=8";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
     }
 }
