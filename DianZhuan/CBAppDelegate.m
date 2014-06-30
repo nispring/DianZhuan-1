@@ -59,12 +59,14 @@
         [CBKeyChain save:INCOME data:@"100"];
 
         [CBKeyChain save:EXPEND data:@"0"];
-        [CBKeyChain save:YOUMI data:@"0"];
-        [CBKeyChain save:CHUKONG data:@"0"];
-        [CBKeyChain save:DUOMENG data:@"0"];
-        [CBKeyChain save:WANPU data:@"0"];
-        [CBKeyChain save:MOPAN data:@"0"];
         [CBKeyChain save:INVITE data:@"0"];
+        [CBKeyChain save:RECORDDATE data:@""];
+
+//        [CBKeyChain save:YOUMI data:@"0"];
+//        [CBKeyChain save:CHUKONG data:@"0"];
+//        [CBKeyChain save:DUOMENG data:@"0"];
+//        [CBKeyChain save:WANPU data:@"0"];
+//        [CBKeyChain save:MOPAN data:@"0"];
         
         //上传bmob User表
         BmobObject *bmob = [BmobObject objectWithClassName:@"User"];

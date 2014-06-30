@@ -239,8 +239,6 @@
             //上次转盘时间
             NSString *turnDate = [CBKeyChain load:RECORDDATE];
             
-            DLog(@"%@",turnDate);
-            DLog(@"%@",newServerDate);
             if(turnDate.length>0){
                 if([turnDate isEqualToString:newServerDate]){
                     [MBHUDView hudWithBody:@"明天再来吧" type:MBAlertViewHUDTypeExclamationMark hidesAfter:2.5 show:YES];
@@ -446,10 +444,11 @@
         //提示用户获得多少积分
         [UIAlertView showAlertViewWithMessage:[NSString stringWithFormat:@"恭喜获得%@ %@积分",adName,subStr]];
         
-        //保存在keychain
+        //保存在keychain  总积分 和对应平台积分
         NSString *newTotalIntegral = [NSString stringWithFormat:@"%d",[[CBKeyChain load:TOTOLINTEGRAL] intValue]+[subStr intValue]];
         [CBKeyChain save:TOTOLINTEGRAL data:newTotalIntegral];
-        [CBKeyChain save:adId data:newIntegral];
+        
+        [CBKeyChain save:adId data:subStr];
         [[RecordManager sharedRecordManager] updateRecordWithContent:adName andIntegral:[NSString stringWithFormat:@"+%@",subStr]];
         
         //通知刷新积分
