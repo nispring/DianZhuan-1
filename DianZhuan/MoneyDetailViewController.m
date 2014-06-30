@@ -26,7 +26,6 @@
     self.title = @"收支明细";
     
     self.dataArray = [[NSMutableArray alloc]initWithArray:[[RecordManager sharedRecordManager]loadRecord]];
-    DLog(@"%@",_dataArray);
     
     NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"MoneyDetailTopCell"owner:self options:nil];
     self.moneyDetailTopCell = [nib objectAtIndex:0];
@@ -40,7 +39,6 @@
     table.frame = CGRectMake(0, 0, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT-64);
     table.dataSource = self;
     table.delegate = self;
-    table.backgroundColor = [UIColor clearColor];
     table.tableFooterView = [[UIView alloc]init];
 
 }

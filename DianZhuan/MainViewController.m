@@ -103,7 +103,8 @@
     [PBOfferWall sharedOfferWall].delegate = self;
     
     //多盟
-    self.dmManager = [[DMOfferWallManager alloc] initWithPublisherID:@"96ZJ056QzeFWrwTBvy"andUserID:nil];
+    ;
+    self.dmManager = [[DMOfferWallManager alloc]initWithPublisherID:@"96ZJ056QzeFWrwTBvy"];
     self.dmManager.delegate = self;
     
     //万普
@@ -112,9 +113,7 @@
     //磨盘
     self.MopanAdWall = [[MopanAdWall alloc]initWithMopan:@"12703" withAppSecret:@"5vvayxpa9vfk3osl"];
     self.MopanAdWall.delegate = self;
-    
-    //查询积分
-    [self queryIntegral];
+    self.MopanAdWall.rootViewController = self;
     
     //刷新当前积分
     [NOTIFICATION_CENTER addObserver:self selector:@selector(UpdateIntegral) name:@"UpdateIntegral" object:nil];
@@ -154,6 +153,9 @@
 }
 
 - (void)UpdateIntegral{
+    //查询积分
+    [self queryIntegral];
+
     self.mainTopCell.idLabel.text = [CBKeyChain load:USERID];
     self.mainTopCell.integralLabel.text = [CBKeyChain load:TOTOLINTEGRAL];
     
@@ -331,8 +333,11 @@
 
 //有米 回调
 - (void)pointsGotted:(NSNotification *)notification {
-    [YouMiPointsManager pointsRemained];
+
     NSString *integral = [NSString stringWithFormat:@"%d",*[YouMiPointsManager pointsRemained]];
+    
+    NSLog(@"有米总积分：%@",integral);
+
     [self updateIntegralWithADType:1 andIntegral:integral];
 
 }
@@ -355,6 +360,8 @@
         totalCoins += [dic[@"coins"]intValue];
     }
     NSString *integral = [NSString stringWithFormat:@"%d",totalCoins];
+    NSLog(@"触控总积分：%@",integral);
+
     [self updateIntegralWithADType:2 andIntegral:integral];
 
 }
@@ -365,6 +372,8 @@
         totalConsumedPoint:(NSNumber *)consumedPoint{
     
     NSString *integral = [NSString stringWithFormat:@"%@",totalPoint];
+    NSLog(@"多盟总积分：%@",integral);
+
     [self updateIntegralWithADType:3 andIntegral:integral];
 
 }
@@ -373,6 +382,8 @@
 -(void)onGetPointsSuccess:(NSNotification*)notifyObj{
     WapsUserPoints *userPoints = notifyObj.object;
     NSString *integral = [NSString stringWithFormat:@"%d",[userPoints getPointsValue]];
+    
+    DLog(@"万普积分:%@",integral);
     [self updateIntegralWithADType:4 andIntegral:integral];
 
 }
@@ -429,8 +440,7 @@
             break;
     }
     //如果该平台获取到得积分大于keychai中积分
-    NSString *subStr = [NSString stringWithFormat:@"%d",[newIntegral intValue]>[oldIntegral intValue]];
-    
+    NSString *subStr = [NSString stringWithFormat:@"%d",[newIntegral intValue]-[oldIntegral intValue]];
     if([subStr intValue] > 0){
         
         //提示用户获得多少积分
