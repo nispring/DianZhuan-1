@@ -83,10 +83,6 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *turnDate = [dateFormatter stringFromDate:[NSDate date]];
     [CBKeyChain save:RECORDDATE data:turnDate];
-
-
-    
-    
     btn_start.enabled = NO;
     //  概率测试
     //    NSInteger count01=0;
@@ -123,10 +119,19 @@
     NSInteger rValue = (arc4random()%10000);
     if (rValue<=(10)) {
         //8 --->1
-        random=12;
+        //先干掉8元
+        //random=12;
+        NSArray *arr = @[@3,@7,@11];
+        NSInteger r= (arc4random()%3);
+        random = [arr[r] floatValue];
     }else if (rValue<=(100)){
         //3---->1
-        random = 9;
+        //random = 9;
+        //先干掉3元
+        NSArray *arr = @[@3,@7,@11];
+        NSInteger r= (arc4random()%3);
+        random = [arr[r] floatValue];
+
     }else if (rValue<=(590)){
         //0.5--->2
         NSArray *arr = @[@2,@5];
@@ -165,7 +170,7 @@
         integral = 300;
     }else if (orign ==5 || orign == 2)
     {
-        integral = 500;
+        integral = 50;
     }else if (orign == 3 ||orign == 7 || orign == 11)
     {
         integral = 10;

@@ -459,7 +459,6 @@
         [bquery getObjectInBackgroundWithId:[CBKeyChain load:USERID] block:^(BmobObject *object,NSError *error){
             if (!error) {
                 if (object) {
-                    [object setObject:subStr forKey:adId];
                     [object setObject:newTotalIntegral forKey:TOTOLINTEGRAL];
                     [object updateInBackground];
                 }
@@ -477,8 +476,6 @@
         }];
     }
 }
-
-
 
 //检测更新
 - (void)checkVersion{

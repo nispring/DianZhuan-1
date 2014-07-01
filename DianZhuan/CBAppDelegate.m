@@ -53,25 +53,26 @@
     [self.window makeKeyAndVisible];
 
     
+    MainViewController *mainVC = [[MainViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:mainVC];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = nav;
+    [self.window makeKeyAndVisible];
+
+    
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]){
         //保存在keychain
         [CBKeyChain save:TOTOLINTEGRAL data:@"100"];
         [CBKeyChain save:INCOME data:@"100"];
-
         [CBKeyChain save:EXPEND data:@"0"];
         [CBKeyChain save:INVITE data:@"0"];
         [CBKeyChain save:RECORDDATE data:@""];
 
-//        [CBKeyChain save:YOUMI data:@"0"];
-//        [CBKeyChain save:CHUKONG data:@"0"];
-//        [CBKeyChain save:DUOMENG data:@"0"];
-//        [CBKeyChain save:WANPU data:@"0"];
-//        [CBKeyChain save:MOPAN data:@"0"];
         
         //上传bmob User表
         BmobObject *bmob = [BmobObject objectWithClassName:@"User"];
         [bmob setObject:@"100" forKey:TOTOLINTEGRAL];
-        [bmob setObject:@"100" forKey:INCOME];
         [bmob saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
             if(isSuccessful){
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
@@ -87,22 +88,22 @@
         }];
     }
 
-    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"AppStatus"];
-    //查找GameScore表里面id为37ts0001的数据
-    [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
-            if (object) {
-                UIViewController *vc ;
-                NSString *status = [object objectForKey:@"enable"];
-                [status intValue]==0?(vc = [[FirstViewController alloc]init]):(vc = [[MainViewController alloc]init]);
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-                self.window.backgroundColor = [UIColor whiteColor];
-                self.window.rootViewController = nav;
-                [self.window makeKeyAndVisible];
-            }else{
-                [UIAlertView showAlertViewWithMessage:@"网络错误"];
-            }
-    }];
+    //应付苹果审核
+//    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"AppStatus"];
+//    [bquery getObjectInBackgroundWithId:@"37ts0001" block:^(BmobObject *object,NSError *error){
+//            if (object) {
+//                UIViewController *vc ;
+//                NSString *status = [object objectForKey:@"enable"];
+//                [status intValue]==0?(vc = [[FirstViewController alloc]init]):(vc = [[MainViewController alloc]init]);
+//                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+//                self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//                self.window.backgroundColor = [UIColor whiteColor];
+//                self.window.rootViewController = nav;
+//                [self.window makeKeyAndVisible];
+//            }else{
+//                [UIAlertView showAlertViewWithMessage:@"网络错误"];
+//            }
+//    }];
     
     return YES;
 }
